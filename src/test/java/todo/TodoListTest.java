@@ -25,4 +25,16 @@ class TodoListTest {
         assertEquals("swimming", todoItems.get(0).getContent());
         assertEquals("gaming", todoItems.get(1).getContent());
     }
+
+    @Test
+    void should_generate_sequential_item_id_when_add_new_todo_item_given_item_was_added_successfully() {
+        TodoList todoList = new TodoList();
+        todoList.add("swimming");
+        todoList.add("gaming");
+
+        List<TodoItem> todoItems = todoList.listAll();
+        assertEquals(2, todoItems.size());
+        assertEquals(1, todoItems.get(0).getId());
+        assertEquals(2, todoItems.get(1).getId());
+    }
 }

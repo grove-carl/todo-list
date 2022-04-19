@@ -5,6 +5,9 @@ import java.util.List;
 
 public class TodoList {
 
+    private static Integer TODO_ITEM_ID = 1;
+    private static final boolean INITIAL_VALUE_FOR_IS_DONE_FIELD = false;
+
     private final List<TodoItem> todoItems;
 
     public TodoList() {
@@ -16,7 +19,11 @@ public class TodoList {
     }
 
     public void add(String content) {
-        TodoItem todoItem = TodoItem.builder().content(content).build();
+        TodoItem todoItem = TodoItem.builder()
+                .id(TODO_ITEM_ID)
+                .content(content)
+                .isDone(INITIAL_VALUE_FOR_IS_DONE_FIELD).build();
         todoItems.add(todoItem);
+        TODO_ITEM_ID++;
     }
 }
