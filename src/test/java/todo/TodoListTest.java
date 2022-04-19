@@ -4,20 +4,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TodoListTest {
 
+    private TodoList todoList;
+
+    @BeforeEach
+    void setUp() {
+        todoList = new TodoList();
+    }
+
     @Test
     void should_return_empty_list_when_list_all_given_no_todo_item_exist() {
-        TodoList todoList = new TodoList();
-
         assertEquals(0, todoList.listAll().size());
     }
 
     @Test
     void should_return_non_empty_list_when_list_all_given_some_todo_items_exist() {
-        TodoList todoList = new TodoList();
         todoList.add("swimming");
         todoList.add("gaming");
 
@@ -29,7 +35,6 @@ class TodoListTest {
 
     @Test
     void should_generate_sequential_item_id_when_add_new_todo_item_given_item_was_added_successfully() {
-        TodoList todoList = new TodoList();
         todoList.add("swimming");
         todoList.add("gaming");
 
@@ -41,8 +46,6 @@ class TodoListTest {
 
     @Test
     void should_return_inserted_item_when_add_new_todo_item_given_item_was_added_successfully() {
-        TodoList todoList = new TodoList();
-
         TodoItem insertedItem = todoList.add("gaming");
 
         assertEquals(1, insertedItem.getId());

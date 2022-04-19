@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Executor {
 
+    private static final String TODO_ADD_COMMAND_KEYWORD = "todo add";
     private final TodoList todoList;
 
     public Executor() {
@@ -11,20 +12,18 @@ public class Executor {
     }
 
     public List<String> execute(String command) {
-        String todoContent = extractTodoContentFromCommand(command);
-
+        String todoContent = extractTodoContentFromAddCommand(command);
         TodoItem insertedTodoItem = todoList.add(todoContent);
-
         return constructResultInfo(insertedTodoItem);
     }
 
-    private String extractTodoContentFromCommand(String command) {
-        return command.substring("todo add".length()).trim();
+    private String extractTodoContentFromAddCommand(String command) {
+        return command.substring(TODO_ADD_COMMAND_KEYWORD.length()).trim();
     }
 
     private List<String> constructResultInfo(TodoItem todoItem) {
-        String line1 = todoItem.getId() + ". " + todoItem.getContent();
-        String line2 = "Item " + todoItem.getId() + " added";
-        return List.of(line1, line2);
+        String insertedContentLine = String.format("%d. %s", todoItem.getId(), todoItem.getContent());
+        String insertedResultLine = String.format("Item %d added", todoItem.getId());
+        return List.of(insertedContentLine, insertedResultLine);
     }
 }
