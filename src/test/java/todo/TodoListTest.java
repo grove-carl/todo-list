@@ -1,6 +1,7 @@
 package todo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -39,11 +40,13 @@ class TodoListTest {
     }
 
     @Test
-    void should_return_generated_id_when_add_new_todo_item_given_item_was_added_successfully() {
+    void should_return_inserted_item_when_add_new_todo_item_given_item_was_added_successfully() {
         TodoList todoList = new TodoList();
 
-        Integer generatedId = todoList.add("gaming");
+        TodoItem insertedItem = todoList.add("gaming");
 
-        assertEquals(1, generatedId);
+        assertEquals(1, insertedItem.getId());
+        assertEquals("gaming", insertedItem.getContent());
+        assertFalse(insertedItem.isDone());
     }
 }

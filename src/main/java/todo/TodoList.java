@@ -18,14 +18,15 @@ public class TodoList {
         return todoItems;
     }
 
-    public Integer add(String content) {
-        Integer generatedId = TODO_ITEM_ID;
+    public TodoItem add(String content) {
         TodoItem todoItem = TodoItem.builder()
-                .id(generatedId)
+                .id(TODO_ITEM_ID)
                 .content(content)
                 .isDone(INITIAL_VALUE_FOR_IS_DONE_FIELD).build();
         todoItems.add(todoItem);
+
         TODO_ITEM_ID++;
-        return generatedId;
+
+        return todoItem;
     }
 }
