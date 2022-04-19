@@ -37,4 +37,13 @@ class TodoListTest {
         assertEquals(1, todoItems.get(0).getId());
         assertEquals(2, todoItems.get(1).getId());
     }
+
+    @Test
+    void should_return_generated_id_when_add_new_todo_item_given_item_was_added_successfully() {
+        TodoList todoList = new TodoList();
+
+        Integer generatedId = todoList.add("gaming");
+
+        assertEquals(1, generatedId);
+    }
 }
