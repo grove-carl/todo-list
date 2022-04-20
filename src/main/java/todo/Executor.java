@@ -9,6 +9,7 @@ public class Executor {
     private static final String TODO_ADD_COMMAND_KEYWORD = "todo add";
     private static final String TODO_DONE_COMMAND_KEYWORD = "todo done";
     private static final String TODO_LIST_COMMAND_KEYWORD = "todo list";
+    private static final String ALL_OPTION = "--all";
     private final TodoList todoList;
 
     public Executor() {
@@ -25,8 +26,13 @@ public class Executor {
             TodoItem doneTodoItem = todoList.done(doneItemId);
             return constructDoneResultInfo(doneTodoItem);
         } else if (isListCommand(command)) {
-            List<TodoItem> todoItems = todoList.listAllUnfinished();
-            return constructListResultInfo(todoItems);
+            if (hasAllOption(command)) {
+                List<TodoItem> todoItems = todoList.listAll();
+                return constructListAllResultInfo(todoItems);
+            } else {
+                List<TodoItem> todoItems = todoList.listAllUnfinished();
+                return constructListResultInfo(todoItems);
+            }
         }
         return null;
     }
@@ -41,6 +47,10 @@ public class Executor {
 
     private boolean isListCommand(String command) {
         return command.startsWith(TODO_LIST_COMMAND_KEYWORD);
+    }
+
+    private boolean hasAllOption(String command) {
+        return command.contains(ALL_OPTION);
     }
 
     private String extractTodoContentFromAddCommand(String command) {
@@ -62,14 +72,29 @@ public class Executor {
         return List.of(resultLine);
     }
 
+    private List<String> constructListAllResultInfo(List<TodoItem> todoItems) {
+        List<String> todoItemContentLines = constructTodoItemContentLines(todoItems);
+        long finishedItemsCount = todoItems.stream().filter(TodoItem::isDone).count();
+        String statisticsLine = String.format("Total: %d items, %d items done",
+                todoItemContentLines.size(), finishedItemsCount);
+
+        List<String> result = new ArrayList<>(todoItemContentLines);
+        result.add(statisticsLine);
+        return result;
+    }
+
     private List<String> constructListResultInfo(List<TodoItem> todoItems) {
-        List<String> todoItemContentLines = todoItems.stream()
-                .map(TodoItem::toString)
-                .collect(Collectors.toList());
+        List<String> todoItemContentLines = constructTodoItemContentLines(todoItems);
         String statisticsLine = String.format("Total: %d items", todoItemContentLines.size());
 
         List<String> result = new ArrayList<>(todoItemContentLines);
         result.add(statisticsLine);
         return result;
+    }
+
+    private List<String> constructTodoItemContentLines(List<TodoItem> todoItems) {
+        return todoItems.stream()
+                .map(TodoItem::toString)
+                .collect(Collectors.toList());
     }
 }
