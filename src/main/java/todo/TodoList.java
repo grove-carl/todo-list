@@ -1,21 +1,23 @@
 package todo;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TodoList {
 
     private Integer TODO_ITEM_ID = 1;
     private static final boolean INITIAL_VALUE_FOR_IS_DONE_FIELD = false;
 
-    private final List<TodoItem> todoItems;
+    private final Map<Integer, TodoItem> todoItems;
 
     public TodoList() {
-        todoItems = new ArrayList<>();
+        todoItems = new LinkedHashMap<>();
     }
 
     public List<TodoItem> listAll() {
-        return todoItems;
+        return new ArrayList<>(todoItems.values());
     }
 
     public TodoItem add(String content) {
@@ -23,7 +25,7 @@ public class TodoList {
                 .id(TODO_ITEM_ID)
                 .content(content)
                 .isDone(INITIAL_VALUE_FOR_IS_DONE_FIELD).build();
-        todoItems.add(todoItem);
+        todoItems.put(TODO_ITEM_ID, todoItem);
 
         TODO_ITEM_ID++;
 
@@ -31,12 +33,8 @@ public class TodoList {
     }
 
     public TodoItem done(int id) {
-        for (TodoItem todoItem : todoItems) {
-            if (todoItem.getId() == id) {
-                todoItem.done();
-                return todoItem;
-            }
-        }
-        return null;
+        TodoItem todoItem = todoItems.get(id);
+        todoItem.done();
+        return todoItem;
     }
 }
