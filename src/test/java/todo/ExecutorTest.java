@@ -38,4 +38,19 @@ class ExecutorTest {
         assertEquals("Item 1 done", result.get(0));
     }
 
+    @Test
+    void should_list_all_unfinished_todo_item_when_list_items_given_no_options_inputted() {
+        executor.execute("todo add swimming");
+        executor.execute("todo add programming");
+        executor.execute("todo add gaming");
+        executor.execute("todo done 2");
+
+        String command = "todo list";
+        List<String> result = executor.execute(command);
+
+        assertEquals(3, result.size());
+        assertEquals("1. swimming", result.get(0));
+        assertEquals("3. gaming", result.get(1));
+        assertEquals("Total: 2 items", result.get(2));
+    }
 }

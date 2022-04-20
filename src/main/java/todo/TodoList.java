@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TodoList {
 
@@ -18,6 +19,10 @@ public class TodoList {
 
     public List<TodoItem> listAll() {
         return new ArrayList<>(todoItems.values());
+    }
+
+    public List<TodoItem> listAllUnfinished() {
+        return todoItems.values().stream().filter(todoItem -> !todoItem.isDone()).collect(Collectors.toList());
     }
 
     public TodoItem add(String content) {

@@ -66,4 +66,22 @@ class TodoListTest {
         assertEquals("gaming", doneItem.getContent());
         assertTrue(doneItem.isDone());
     }
+
+    @Test
+    void should_return_all_unfinished_items_when_list_items() {
+        todoList.add("swimming");
+        todoList.add("programming");
+        todoList.add("gaming");
+        todoList.done(2);
+
+        List<TodoItem> todoItems = todoList.listAllUnfinished();
+
+        assertEquals(2, todoItems.size());
+        assertEquals(1, todoItems.get(0).getId());
+        assertEquals("swimming", todoItems.get(0).getContent());
+        assertFalse(todoItems.get(0).isDone());
+        assertEquals(3, todoItems.get(1).getId());
+        assertEquals("gaming", todoItems.get(1).getContent());
+        assertFalse(todoItems.get(1).isDone());
+    }
 }
