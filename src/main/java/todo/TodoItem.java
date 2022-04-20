@@ -9,5 +9,9 @@ public class TodoItem {
 
     private final int id;
     private final String content;
-    private final boolean isDone;
+    private boolean isDone;
+
+    public void done() {
+        this.isDone = true;
+    }
 }

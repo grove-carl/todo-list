@@ -2,9 +2,10 @@ package todo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,5 +52,18 @@ class TodoListTest {
         assertEquals(1, insertedItem.getId());
         assertEquals("gaming", insertedItem.getContent());
         assertFalse(insertedItem.isDone());
+    }
+
+    @Test
+    void should_return_done_item_when_done_item_given_item_was_mark_as_done_successfully() {
+        todoList.add("swimming");
+        todoList.add("gaming");
+
+        TodoItem doneItem = todoList.done(2);
+
+        assertNotNull(doneItem);
+        assertEquals(2, doneItem.getId());
+        assertEquals("gaming", doneItem.getContent());
+        assertTrue(doneItem.isDone());
     }
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TodoList {
 
-    private static Integer TODO_ITEM_ID = 1;
+    private Integer TODO_ITEM_ID = 1;
     private static final boolean INITIAL_VALUE_FOR_IS_DONE_FIELD = false;
 
     private final List<TodoItem> todoItems;
@@ -28,5 +28,15 @@ public class TodoList {
         TODO_ITEM_ID++;
 
         return todoItem;
+    }
+
+    public TodoItem done(int id) {
+        for (TodoItem todoItem : todoItems) {
+            if (todoItem.getId() == id) {
+                todoItem.done();
+                return todoItem;
+            }
+        }
+        return null;
     }
 }
