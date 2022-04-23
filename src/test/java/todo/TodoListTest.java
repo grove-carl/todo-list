@@ -5,17 +5,22 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TodoListTest {
 
+    private Map<Integer, TodoItem> todoItems;
     private TodoList todoList;
 
     @BeforeEach
     void setUp() {
-        todoList = new TodoList();
+        todoItems = new LinkedHashMap<>();
+        todoList = new TodoList(todoItems);
     }
 
     @Test
@@ -30,7 +35,7 @@ class TodoListTest {
         todoList.add("gaming");
         todoList.done(2);
 
-        List<TodoItem> todoItems = todoList.listAll();
+        List<TodoItem> todoItems = new ArrayList<>(this.todoItems.values());
 
         assertEquals(3, todoItems.size());
         assertEquals(1, todoItems.get(0).getId());
@@ -49,7 +54,7 @@ class TodoListTest {
         todoList.add("swimming");
         todoList.add("gaming");
 
-        List<TodoItem> todoItems = todoList.listAll();
+        List<TodoItem> todoItems = new ArrayList<>(this.todoItems.values());
         assertEquals(2, todoItems.size());
         assertEquals("swimming", todoItems.get(0).getContent());
         assertEquals("gaming", todoItems.get(1).getContent());
@@ -60,7 +65,7 @@ class TodoListTest {
         todoList.add("swimming");
         todoList.add("gaming");
 
-        List<TodoItem> todoItems = todoList.listAll();
+        List<TodoItem> todoItems = new ArrayList<>(this.todoItems.values());
         assertEquals(2, todoItems.size());
         assertEquals(1, todoItems.get(0).getId());
         assertEquals(2, todoItems.get(1).getId());
@@ -77,8 +82,8 @@ class TodoListTest {
 
     @Test
     void should_return_done_item_when_done_item_given_item_was_mark_as_done_successfully() {
-        todoList.add("swimming");
-        todoList.add("gaming");
+        this.todoItems.put(1, TodoItem.builder().id(1).content("swimming").isDone(false).build());
+        this.todoItems.put(2, TodoItem.builder().id(2).content("gaming").isDone(false).build());
 
         TodoItem doneItem = todoList.done(2);
 
@@ -90,10 +95,9 @@ class TodoListTest {
 
     @Test
     void should_return_all_unfinished_items_when_list_items() {
-        todoList.add("swimming");
-        todoList.add("programming");
-        todoList.add("gaming");
-        todoList.done(2);
+        this.todoItems.put(1, TodoItem.builder().id(1).content("swimming").isDone(false).build());
+        this.todoItems.put(2, TodoItem.builder().id(2).content("programming").isDone(true).build());
+        this.todoItems.put(3, TodoItem.builder().id(3).content("gaming").isDone(false).build());
 
         List<TodoItem> todoItems = todoList.listAllUnfinished();
 

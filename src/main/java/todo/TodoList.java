@@ -5,17 +5,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
+
+@RequiredArgsConstructor
 public class TodoList {
 
     private Integer TODO_ITEM_ID = 1;
     private static final boolean INITIAL_VALUE_FOR_IS_DONE_FIELD = false;
 
     private final Map<Integer, TodoItem> todoItems;
-
-    public TodoList() {
-        todoItems = new LinkedHashMap<>();
-    }
 
     public List<TodoItem> listAll() {
         return new ArrayList<>(todoItems.values());

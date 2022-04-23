@@ -3,7 +3,9 @@ package todo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class Executor {
 
     private static final String TODO_ADD_COMMAND_KEYWORD = "todo add";
@@ -11,10 +13,6 @@ public class Executor {
     private static final String TODO_LIST_COMMAND_KEYWORD = "todo list";
     private static final String ALL_OPTION = "--all";
     private final TodoList todoList;
-
-    public Executor() {
-        todoList = new TodoList();
-    }
 
     public List<String> execute(String command) {
         if (isAddCommand(command)) {

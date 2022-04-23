@@ -2,17 +2,20 @@ package todo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ExecutorTest {
 
+    private TodoList todoList;
     private Executor executor;
 
     @BeforeEach
     void setUp() {
-        executor = new Executor();
+        todoList = new TodoList(new LinkedHashMap<>());
+        executor = new Executor(todoList);
     }
 
     @Test
@@ -28,8 +31,8 @@ class ExecutorTest {
 
     @Test
     void should_return_execution_result_when_mark_item_as_done_given_item_was_mark_as_done_successfully() {
-        executor.execute("todo add swimming");
-        executor.execute("todo add gaming");
+        todoList.add("swimming");
+        todoList.add("gaming");
 
         String command = "todo done 1";
         List<String> result = executor.execute(command);
@@ -40,10 +43,10 @@ class ExecutorTest {
 
     @Test
     void should_list_all_unfinished_todo_item_when_list_items_given_no_options_added() {
-        executor.execute("todo add swimming");
-        executor.execute("todo add programming");
-        executor.execute("todo add gaming");
-        executor.execute("todo done 2");
+        todoList.add("swimming");
+        todoList.add("programming");
+        todoList.add("gaming");
+        todoList.done(2);
 
         String command = "todo list";
         List<String> result = executor.execute(command);
@@ -56,10 +59,10 @@ class ExecutorTest {
 
     @Test
     void should_list_all_todo_item_when_list_items_given_all_option_is_added() {
-        executor.execute("todo add swimming");
-        executor.execute("todo add programming");
-        executor.execute("todo add gaming");
-        executor.execute("todo done 2");
+        todoList.add("swimming");
+        todoList.add("programming");
+        todoList.add("gaming");
+        todoList.done(2);
 
         String command = "todo list --all";
         List<String> result = executor.execute(command);
