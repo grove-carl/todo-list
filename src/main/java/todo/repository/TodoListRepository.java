@@ -1,7 +1,8 @@
-package todo;
+package todo.repository;
 
 import java.util.List;
 import java.util.Optional;
+import todo.TodoItem;
 
 public interface TodoListRepository {
 
