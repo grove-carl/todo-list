@@ -1,9 +1,6 @@
 package todo;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
@@ -14,14 +11,14 @@ public class TodoList {
     private Integer TODO_ITEM_ID = 1;
     private static final boolean INITIAL_VALUE_FOR_IS_DONE_FIELD = false;
 
-    private final Map<Integer, TodoItem> todoItems;
+    private final TodoListRepository repository;
 
     public List<TodoItem> listAll() {
-        return new ArrayList<>(todoItems.values());
+        return repository.findAll();
     }
 
     public List<TodoItem> listAllUnfinished() {
-        return todoItems.values().stream().filter(todoItem -> !todoItem.isDone()).collect(Collectors.toList());
+        return repository.findAll().stream().filter(todoItem -> !todoItem.isDone()).collect(Collectors.toList());
     }
 
     public TodoItem add(String content) {
@@ -29,16 +26,16 @@ public class TodoList {
                 .id(TODO_ITEM_ID)
                 .content(content)
                 .isDone(INITIAL_VALUE_FOR_IS_DONE_FIELD).build();
-        todoItems.put(TODO_ITEM_ID, todoItem);
-
         TODO_ITEM_ID++;
-
-        return todoItem;
+        return repository.save(todoItem);
     }
 
     public TodoItem done(int id) {
-        TodoItem todoItem = todoItems.get(id);
+        TodoItem todoItem = repository.findById(id).orElseThrow(() -> {
+            throw new IllegalArgumentException();
+        });
         todoItem.done();
-        return todoItem;
+
+        return repository.save(todoItem);
     }
 }

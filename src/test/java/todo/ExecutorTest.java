@@ -1,11 +1,12 @@
 package todo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class ExecutorTest {
 
@@ -14,14 +15,15 @@ class ExecutorTest {
 
     @BeforeEach
     void setUp() {
-        todoList = new TodoList(new LinkedHashMap<>());
+        todoList = Mockito.mock(TodoList.class);
         executor = new Executor(todoList);
     }
 
     @Test
     void should_return_execution_result_when_add_todo_item_given_item_was_added_successfully() {
-        String command = "todo add gaming";
+        when(todoList.add("gaming")).thenReturn(TodoItem.builder().id(1).content("gaming").isDone(false).build());
 
+        String command = "todo add gaming";
         List<String> result = executor.execute(command);
 
         assertEquals(2, result.size());
@@ -31,8 +33,7 @@ class ExecutorTest {
 
     @Test
     void should_return_execution_result_when_mark_item_as_done_given_item_was_mark_as_done_successfully() {
-        todoList.add("swimming");
-        todoList.add("gaming");
+        when(todoList.done(1)).thenReturn(TodoItem.builder().id(1).content("swimming").isDone(false).build());
 
         String command = "todo done 1";
         List<String> result = executor.execute(command);
@@ -43,10 +44,10 @@ class ExecutorTest {
 
     @Test
     void should_list_all_unfinished_todo_item_when_list_items_given_no_options_added() {
-        todoList.add("swimming");
-        todoList.add("programming");
-        todoList.add("gaming");
-        todoList.done(2);
+        when(todoList.listAllUnfinished()).thenReturn(List.of(
+                TodoItem.builder().id(1).content("swimming").isDone(false).build(),
+                TodoItem.builder().id(3).content("gaming").isDone(false).build()
+        ));
 
         String command = "todo list";
         List<String> result = executor.execute(command);
@@ -59,10 +60,11 @@ class ExecutorTest {
 
     @Test
     void should_list_all_todo_item_when_list_items_given_all_option_is_added() {
-        todoList.add("swimming");
-        todoList.add("programming");
-        todoList.add("gaming");
-        todoList.done(2);
+        when(todoList.listAll()).thenReturn(List.of(
+                TodoItem.builder().id(1).content("swimming").isDone(false).build(),
+                TodoItem.builder().id(2).content("programming").isDone(true).build(),
+                TodoItem.builder().id(3).content("gaming").isDone(false).build()
+        ));
 
         String command = "todo list --all";
         List<String> result = executor.execute(command);
